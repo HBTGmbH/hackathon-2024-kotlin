@@ -1,0 +1,41 @@
+{
+  "release-type": "simple",
+  "draft": "true",
+  "bump-minor-pre-major": "true",
+  "bump-patch-for-minor-pre-major": "true",
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Added",
+      "hidden": false
+    },
+    {
+      "type": "change",
+      "section": "Changed",
+      "hidden": false
+    },
+    {
+      "type": "deprecate",
+      "section": "Deprecated",
+      "hidden": false
+    },
+    {
+      "type": "fix",
+      "section": "Fixed",
+      "hidden": false
+    },
+    {
+      "type": "remove",
+      "section": "Removed",
+      "hidden": false
+    },
+    {
+      "type": "security",
+      "section": "Security",
+      "hidden": false
+    }
+  ],
+  "packages": {
+    ".": {}
+  }
+}

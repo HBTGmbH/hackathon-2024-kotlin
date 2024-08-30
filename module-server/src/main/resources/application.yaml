@@ -1,0 +1,81 @@
+server:
+  port: 8080
+  shutdown: graceful
+  forward-headers-strategy: framework
+  http2:
+    enabled: true
+
+### technical configurations ###
+management:
+  # for security, don't use same port as application
+  server.port: 8081
+  health:
+    livenessState.enabled: true
+    readinessState.enabled: true
+  endpoint:
+    health:
+      show-details: always
+      probes.enabled: true
+      group:
+        readiness.include: readinessState,diskSpace,rest
+        liveness.include: livenessState
+  endpoints.web.exposure.include: '*'
+  # activate percentiles for web and grpc requests
+  metrics.distribution.percentiles-histogram:
+    grpc.server.processing.duration: true
+    http.server.requests: true
+
+spring:
+  main:
+    banner-mode: off
+  profiles:
+    default: dev
+#  data.mongodb:
+#    uri: ${MONGODB_CONNECTION_STRING}
+#    auto-index-creation: true
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${KEYCLOAK_URL:https://id.2martens.de}/realms/${KEYCLOAK_REALM:2martens}/protocol/openid-connect/certs
+#  application:
+#    name: timetable
+
+springdoc:
+  swagger-ui:
+    display-request-duration: true
+    operationsSorter: method
+    disable-swagger-default-url: true
+    path: '/doc/v1/routing/'
+  default-produces-media-type: 'application/json'
+  api-docs:
+    path: '/api-docs/v1/routing'
+
+openapi:
+  description: |
+    Open API Documentation for the Routing Assistant API
+    
+    TODO
+    
+    
+    ## Changelog
+
+    |Version | Change                                 | Author | Date       |
+    | ------ | -------------------------------------- | ------ | ---------- |
+    |        |                                        | N.N.   | 13.07.2023 |
+
+  version: 1.0
+  title: 'Routing Assistant API'
+
+resttemplate:
+  timeout:
+    readTimeoutRestHealthIndicatorInMillis: 5000
+    connectionRestHealthIndicatorTimeoutInMillis: 5000
+    readTimeoutRestTemplateInMillis: 5000
+    connectionRestTemplateTimeoutInMillis: 5000
+
+de.hbt.routing:
+de.hbt.support.health.greeting: "Good morning"
+
+time:
+  defaultTimeZone: Europe/Berlin

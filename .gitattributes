@@ -1,0 +1,2 @@
+gradle/wrapper/gradle-wrapper.jar filter= diff= merge= -text
+*.sh text eol=lf

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration status="warn" monitorInterval="30">
+  <Appenders>
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout alwaysWriteExceptions="true"
+        pattern="%5p %d{HH:mm:ss.SSS} (%F:%L) %notEmpty{[%X{REQTYPE}] }%notEmpty{[%marker] }%K{event.end}%m%n%xEx{full}"/>
+    </Console>
+    <Console name="interceptor" target="SYSTEM_OUT">
+      <!--      <EcsLayout servicename="${env:spring_application_name}" includeOrigin="true" includeMarkers="true"/>-->
+      <PatternLayout alwaysWriteExceptions="true"
+        pattern="%5p %d{HH:mm:ss.SSS} (%F:%L) %notEmpty{[%K{REQTYPE}] }%notEmpty{[%X{REQTYPE}] }%K{network.direction} %K{http.request.method} %K{http.response.status_code} %K{url.full} (duration=%K{event.duration} request-size=%K{http.request.body.bytes} response-size=%K{http.response.body.bytes} trace-id=%notEmpty{%K{trace.id}}%notEmpty{%X{trace.id}})%n%xEx{full}"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="WARN">
+      <AppenderRef ref="console"/>
+    </Root>
+    <Logger additivity="true" level="INFO" name="statusprobe"/>
+    <Logger additivity="true" level="DEBUG" name="de.hbt.routing"/>
+    <Logger additivity="true" level="DEBUG" name="org.springframework.web.method.HandlerMethod"/>
+  </Loggers>
+</Configuration>

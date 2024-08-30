@@ -1,0 +1,144 @@
+[versions]
+spring-boot = "3.2.0"
+spring-doc = "2.1.0"
+spring-cloud = "2023.0.0"
+spring-grpc = "2.14.0.RELEASE"
+grpc = "1.57.0"
+tomcat-annotations = "6.0.53"
+httpclient = "5.2.1"
+jaxb = "4.0.3"
+jakarta-xml = "4.0.1"
+slf4j = "2.0.7"
+log4j = "2.20.0"
+log4j-ecs = "1.5.0"
+mapstruct = "1.5.5.Final"
+junit = "5.10.0"
+assertj = "3.24.2"
+mockito = "5.4.0"
+keycloak = "22.0.1"
+kotlin-logging = "3.0.5"
+kotlin-reflect = "1.9.0"
+kotlin-lombok = "1.9.0"
+plugin-nebula-release = "17.2.2"
+plugin-lombok = "8.0.1"
+plugin-gradle-versions = "0.46.0"
+plugin-version-catalog = "0.8.0"
+plugin-kotlin-gradle = "1.9.21"
+plugin-jib = "3.3.2"
+
+[libraries]
+spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-log4j = { module = "org.springframework.boot:spring-boot-starter-log4j2" }
+spring-boot-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
+spring-boot-mongo = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
+spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
+spring-boot-config = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
+spring-cloud = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
+spring-cloud-starter = { module = "org.springframework.cloud:spring-cloud-starter" }
+spring-cloud-starter-bus-kafka = { module = "org.springframework.cloud:spring-cloud-starter-bus-kafka" }
+spring-cloud-starter-config = { module = "org.springframework.cloud:spring-cloud-starter-config" }
+spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server" }
+spring-cloud-leader-election = { module = "org.springframework.cloud:spring-cloud-kubernetes-fabric8-leader" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-grpc = { module = "net.devh:grpc-spring-boot-starter", version.ref = "spring-grpc" }
+spring-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
+spring-sec = { module = "org.springdoc:springdoc-openapi-starter-common", version.ref = "spring-doc" }
+spring-openapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "spring-doc" }
+jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref="jaxb" }
+jakarta-xml-binding = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jakarta-xml" }
+keycloak-core = { module = "org.keycloak:keycloak-core", version.ref = "keycloak" }
+keycloak-policy-enforcer = { module = "org.keycloak:keycloak-policy-enforcer", version.ref = "keycloak" }
+grpc-api = { module = "io.grpc:grpc-api", version.ref = "grpc" }
+grpc-context = { module = "io.grpc:grpc-context", version.ref = "grpc" }
+grpc-core = { module = "io.grpc:grpc-core", version.ref = "grpc" }
+grpc-netty = { module = "io.grpc:grpc-netty-shaded", version.ref = "grpc" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
+grpc-proto-lite = { module = "io.grpc:grpc-protobuf-lite", version.ref = "grpc" }
+grpc-services = { module = "io.grpc:grpc-services", version.ref = "grpc" }
+grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
+grpc-protocjava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
+grpc-testing = { module = "io.grpc:grpc-testing", version.ref = "grpc" }
+tomcat-annotations = { module = "org.apache.tomcat:annotations-api", version.ref = "tomcat-annotations" }
+httpclient = { module = "org.apache.httpcomponents.client5:httpclient5", version.ref = "httpclient" }
+prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+mapstruct-base = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+log4j-ecs = { module = "co.elastic.logging:log4j2-ecs-layout", version.ref = "log4j-ecs" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+log4j-jul = { module = "org.apache.logging.log4j:log4j-jul", version.ref = "log4j" }
+log4j-slf4j = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-inline = "org.mockito:mockito-inline:5.2.0"
+mockito-junit = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-reflect" }
+plugin-nebula-release = { module = "com.netflix.nebula:nebula-release-plugin", version.ref = "plugin-nebula-release" }
+plugin-springboot = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
+plugin-lombok = { module = "io.freefair.gradle:lombok-plugin", version.ref = "plugin-lombok" }
+plugin-gradle-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "plugin-gradle-versions" }
+plugin-version-catalog = { module = "nl.littlerobots.vcu:plugin", version.ref = "plugin-version-catalog" }
+plugin-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "plugin-kotlin-gradle" }
+plugin-jib = { module = "com.google.cloud.tools:jib-gradle-plugin", version.ref = "plugin-jib" }
+
+[bundles]
+logging = [
+    "log4j-api",
+    "log4j-core",
+    "log4j-ecs",
+    "log4j-jul",
+    "log4j-slf4j",
+    "slf4j-api",
+]
+grpc = [
+    "grpc-api",
+    "grpc-context",
+    "grpc-core",
+    "grpc-netty",
+    "grpc-proto-lite",
+    "grpc-protobuf",
+    "grpc-services",
+    "grpc-stub",
+]
+spring-boot = [
+    "spring-boot-log4j",
+    "spring-boot-starter",
+]
+spring-boot-server = [
+    "spring-boot-actuator",
+    "spring-boot-log4j",
+    "spring-boot-mongo",
+    "spring-boot-thymeleaf",
+    "spring-boot-validation",
+    "spring-boot-web",
+    "spring-cloud-starter",
+    "spring-sec",
+    "spring-ui",
+]
+spring-boot-security = [
+    "keycloak-core",
+    "keycloak-policy-enforcer",
+    "spring-boot-oauth2-resource-server",
+    "spring-boot-security",
+]
+test = [
+    "assertj",
+    "junit-jupiter",
+    "junit-jupiter-api",
+    "mockito-core",
+    "mockito-inline",
+    "mockito-junit",
+]
+
+[plugins]
+kotlin-lombok = { id = "org.jetbrains.kotlin.plugin.lombok", version.ref = "kotlin-lombok" }
