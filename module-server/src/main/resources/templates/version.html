@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head">
+  <title th:text="${version}"></title>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      html{background:#000000;color:#ffffff;font:15px/22px arial,sans-serif}
+    }
+    @media (prefers-color-scheme: light) {
+      html{background:#ffffff;color:#000000;font:15px/22px arial,sans-serif}
+    }
+    body{margin:50px}
+    h1,footer{margin:20px 0}
+    p{margin:0}
+    code{font-family: monospace,monospace}
+    .foot{color:#777777;font-size:80%}
+  </style>
+</head>
+<body style="font-family:sans-serif; line-height: 1.4em;">
+<h2>
+  <th:block th:text="${version}"/>
+</h2>
+<p>
+  Hostname:
+  <th:block th:text="${hostname}"/>
+</p>
+<p>
+  <th:block th:each="item : ${manifest}">
+    <th:block th:text="${item}"/>
+    <br/>
+  </th:block>
+</p>
+<footer class="foot" th:fragment="footer">
+  <th:block th:text="${footerString}"/>
+</footer>
+</body>
+</html>

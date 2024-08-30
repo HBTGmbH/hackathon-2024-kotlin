@@ -53,7 +53,7 @@ class RestHealthIndicator(
     }
 
     companion object {
-        private const val URL_PATH = "/timetable/healthCheck"
+        private const val URL_PATH = "/routing/healthCheck"
         private const val GET_PARAMETER = "message="
     }
 }

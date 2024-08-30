@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(value = ["/timetable"])
+@RequestMapping(value = ["/routing"])
 class HealthCheckController(private val properties: HealthCheckProperties) {
 
 

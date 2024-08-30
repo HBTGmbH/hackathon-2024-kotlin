@@ -1,0 +1,5 @@
+spring:
+  config:
+    import:
+      - "classpath:config/routing.yaml"
+      - "optional:configserver:${CONFIGSERVER_SCHEME:http}://${CONFIGSERVER_HOST:localhost}:${CONFIGSERVER_PORT:8888}${CONFIGSERVER_PREFIX:/config}"

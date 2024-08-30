@@ -1,6 +1,7 @@
 val projectname: String = providers.gradleProperty("projectname").get()
 rootProject.name = projectname
 
+include("deploy")
 include("support")
 include("server")
 

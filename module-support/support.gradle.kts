@@ -10,4 +10,5 @@ dependencies {
     implementation(libs.spring.openapi)
 
     implementation(libs.bundles.spring.boot.security)
+    implementation(libs.spring.cloud.starter.config)
 }

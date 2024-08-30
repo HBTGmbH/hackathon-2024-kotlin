@@ -1,0 +1,7 @@
+de.hbt.routing:
+  statusprobe:
+    scheduleDuration: 60
+    maxKafkaFailureDuration: 5
+    maxBlobFailureCount: 5
+    maxFailurePercent: 50
+de.hbt.support.health.greeting: "Hello %s, on millenium"

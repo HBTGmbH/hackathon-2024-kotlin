@@ -26,6 +26,9 @@ management:
     http.server.requests: true
 
 spring:
+  cloud:
+    config:
+      name: routing
   main:
     banner-mode: off
   profiles:
@@ -33,14 +36,13 @@ spring:
 #  data.mongodb:
 #    uri: ${MONGODB_CONNECTION_STRING}
 #    auto-index-creation: true
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          jwk-set-uri: ${KEYCLOAK_URL:https://id.2martens.de}/realms/${KEYCLOAK_REALM:2martens}/protocol/openid-connect/certs
-#  application:
-#    name: timetable
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${KEYCLOAK_URL:https://id.2martens.de}/realms/${KEYCLOAK_REALM:2martens}/protocol/openid-connect/certs
+  application:
+    name: routing
 springdoc:
   swagger-ui:
     display-request-duration: true
@@ -74,7 +76,6 @@ resttemplate:
     readTimeoutRestTemplateInMillis: 5000
     connectionRestTemplateTimeoutInMillis: 5000
 
-de.hbt.routing:
 de.hbt.support.health.greeting: "Good morning"
 
 time:
