@@ -1,0 +1,24 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      image_version:
+        description: Tag of the application to deploy
+        default: latest
+        required: false
+      target:
+        description: Target overlay of deployment
+        default: test
+        required: true
+permissions:
+  contents: write
+jobs:
+  deploy:
+    name: Deploy
+    uses: 2martens/cloud-configuration/.github/workflows/deploy.yaml@main
+    with:
+      application: routing
+      image_version: ${{ inputs.image_version }}
+      target: ${{ inputs.target }}
+    secrets:
+      ACTIONS_GITHUB_TOKEN: ${{ secrets.ACTIONS_GITHUB_TOKEN }}

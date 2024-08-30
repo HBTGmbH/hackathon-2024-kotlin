@@ -1,0 +1,35 @@
+name: Feature Request
+description: File a feature request
+title: "[Feature Request]: "
+labels: [ "enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Please describe the motivation behind the feature.
+      placeholder: As a user I want to be able to configure the language.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: Please list verifiable steps that are needed to finish the feature.
+      placeholder: |
+        - In the account settings is an option to configure the language used in the interface
+    validations:
+      required: true
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+      description: Is there anything that is NOT part of the feature?
+      placeholder: |
+        - Adding new languages and translating texts
+    validations:
+      required: false

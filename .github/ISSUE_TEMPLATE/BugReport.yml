@@ -1,0 +1,54 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: [ "bug", "triage" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happens
+    attributes:
+      label: What did you experience and what did you expect?
+      description: Please describe as specific as possible what happened and how you expected the behaviour to be.
+      placeholder: |
+        I logged myself in but wasn't after the redirect. I expected the login to work.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How can the bug be reproduced?
+      description: Please describe as specific as possible how the bug can be reproduced.
+      placeholder: |
+        1. Log in
+        2. Enter credentials on Keycloak
+        3. Be redirected back to page
+        4. User is not logged in
+    validations:
+      required: true
+  - type: input
+    id: reproducer
+    attributes:
+      label: Technical Reproduction
+      description: If possible, provide a minimal technical example that reproduces the issue
+      placeholder: https://example.com/how-to-reproduce-this-bug
+    validations:
+      required: false
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: Shell
