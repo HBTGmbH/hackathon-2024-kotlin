@@ -57,8 +57,13 @@ openapi:
   description: |
     Open API Documentation for the Routing Assistant API
     
-    TODO
+    ## Authenticate
     
+    The API is secured by the need to provide bearer tokens. 
+    
+    For all requests a properly authorized user is required.
+    
+    The client_id is "routing", if you are on the Swagger UI and want to authorize there.
     
     ## Changelog
 
