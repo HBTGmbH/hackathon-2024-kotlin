@@ -39,12 +39,6 @@ jobs:
       - name: Create and publish docker image
         if: github.event_name == 'push'
         run: ./gradlew -Prelease.useLastTag=true final jib
-        env:
-          USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Create and publish docker image
         if: github.event_name == 'pull_request'
         run: ./gradlew snapshot jib
-        env:
-          USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
