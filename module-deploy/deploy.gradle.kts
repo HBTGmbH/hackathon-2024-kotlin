@@ -23,8 +23,9 @@ jib {
     to {
         image = "313329311652.dkr.ecr.eu-central-1.amazonaws.com/hbt/routing"
         tags = setOf(
-                "latest",
-                properties["version"].toString().replace("+", "-"))
+                "313329311652.dkr.ecr.eu-central-1.amazonaws.com/hbt/routing:latest",
+                "313329311652.dkr.ecr.eu-central-1.amazonaws.com/hbt/routing:"
+                        + properties["version"].toString().replace("+", "-"))
     }
     container {
         mainClass = "de.hbt.routing.MainApplicationKt"
