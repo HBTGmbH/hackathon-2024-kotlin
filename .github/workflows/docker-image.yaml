@@ -29,6 +29,9 @@ jobs:
         with:
           gradle-version: 8.5
           cache-read-only: true
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
       - name: Create and publish docker image
         if: github.event_name == 'push'
         run: ./gradlew -Prelease.useLastTag=true final jib
