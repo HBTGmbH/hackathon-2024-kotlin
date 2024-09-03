@@ -1,30 +1,30 @@
 [versions]
-spring-boot = "3.2.0"
-spring-doc = "2.1.0"
-spring-cloud = "2023.0.0"
+spring-boot = "3.3.3"
+spring-doc = "2.6.0"
+spring-cloud = "2023.0.3"
 spring-grpc = "2.14.0.RELEASE"
 grpc = "1.57.0"
 tomcat-annotations = "6.0.53"
-httpclient = "5.2.1"
+httpclient = "5.3.1"
 jaxb = "4.0.3"
 jakarta-xml = "4.0.1"
-slf4j = "2.0.7"
-log4j = "2.20.0"
-log4j-ecs = "1.5.0"
-mapstruct = "1.5.5.Final"
-junit = "5.10.0"
-assertj = "3.24.2"
-mockito = "5.4.0"
-keycloak = "22.0.1"
+slf4j = "2.0.16"
+log4j = "2.23.1"
+log4j-ecs = "1.6.0"
+mapstruct = "1.6.0"
+junit = "5.11.0"
+assertj = "3.26.3"
+mockito = "5.13.0"
+keycloak = "25.0.4"
 kotlin-logging = "3.0.5"
-kotlin-reflect = "1.9.0"
+kotlin-reflect = "2.0.20"
 kotlin-lombok = "1.9.0"
 plugin-nebula-release = "17.2.2"
 plugin-lombok = "8.0.1"
 plugin-gradle-versions = "0.46.0"
 plugin-version-catalog = "0.8.0"
 plugin-kotlin-gradle = "1.9.21"
-plugin-jib = "3.3.2"
+plugin-jib = "3.4.3"
 
 [libraries]
 spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
@@ -49,7 +49,7 @@ spring-grpc = { module = "net.devh:grpc-spring-boot-starter", version.ref = "spr
 spring-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
 spring-sec = { module = "org.springdoc:springdoc-openapi-starter-common", version.ref = "spring-doc" }
 spring-openapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "spring-doc" }
-jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref="jaxb" }
+jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "jaxb" }
 jakarta-xml-binding = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jakarta-xml" }
 keycloak-core = { module = "org.keycloak:keycloak-core", version.ref = "keycloak" }
 keycloak-policy-enforcer = { module = "org.keycloak:keycloak-policy-enforcer", version.ref = "keycloak" }
