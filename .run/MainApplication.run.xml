@@ -1,8 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MainApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <envs>
-      <env name="CLIENT_SECRET" value="GQNAuOqPjtXUGBuu1rEbNrWYdnoAzFwM" />
-    </envs>
     <module name="routing.server.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="de.hbt.routing.MainApplication" />
     <method v="2">
