@@ -42,5 +42,5 @@ jobs:
         if: github.event_name == 'push'
         run: ./gradlew -Prelease.useLastTag=true final jib
       - name: Create and publish docker image
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
         run: ./gradlew snapshot jib
