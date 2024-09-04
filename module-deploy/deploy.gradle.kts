@@ -21,7 +21,7 @@ jib {
         }
     }
     to {
-        image = "313329311652.dkr.ecr.eu-central-1.amazonaws.com/hbt/routing"
+        image = "public.ecr.aws/g0w8i4q6/hbt/routing"
         tags = setOf(
                 "latest",
                 properties["version"].toString().replace("+", "-"))
