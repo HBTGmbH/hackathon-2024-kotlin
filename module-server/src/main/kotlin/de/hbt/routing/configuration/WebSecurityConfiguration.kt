@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
-import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 import java.io.IOException
 
@@ -78,6 +77,7 @@ open class WebSecurityConfiguration(private val matcher: LocalHostMatcher) {
                 "/api-docs/v1/routing/**",
                 "/error",
                 "/routing/version",
+                "/gti/**",
         )
         private val PATHS = buildPathConfigs()
 

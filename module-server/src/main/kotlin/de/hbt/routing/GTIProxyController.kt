@@ -10,10 +10,10 @@ import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-@RestController("/gti")
+@RestController
 open class GTIProxyController(private val restTemplate: RestTemplate) {
 
-    @PostMapping(path = ["/{requestMethod}"])
+    @PostMapping(path = ["/gti/{requestMethod}"])
     fun requestGti(@PathVariable("requestMethod") method: String, @RequestBody body: String, @RequestHeader("api-key") key: String): String {
         val headers = HttpHeaders()
         headers.add("geofox-auth-user", "hbt47")
