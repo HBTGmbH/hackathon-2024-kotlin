@@ -53,7 +53,7 @@ class SpringPolicyEnforcerFilter(private val configResolver: ConfigurationResolv
         return null
     }
 
-    private fun getOrCreatePolicyEnforcer(request: HttpRequest): SpringPolicyEnforcer {
+    private fun getOrCreatePolicyEnforcer(request: ServletHttpRequest): SpringPolicyEnforcer {
         return policyEnforcer.computeIfAbsent(configResolver.resolve(request)) { createPolicyEnforcer(it) }
     }
 

@@ -23,7 +23,7 @@ import java.io.IOException
 
 @Configuration
 @EnableWebSecurity
-open class WebSecurityConfiguration {
+open class WebSecurityConfiguration(private val matcher: LocalHostMatcher) {
     @Value("\${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private lateinit var jwkSetUri: String
 
@@ -37,9 +37,9 @@ open class WebSecurityConfiguration {
                 .csrf { it.disable() }
                 .authorizeHttpRequests { it.requestMatchers(*PERMITTED_PATHS.toTypedArray<String>()).permitAll() }
                 .authorizeHttpRequests { it.requestMatchers(HttpMethod.OPTIONS).permitAll() }
+                .authorizeHttpRequests { it.requestMatchers(matcher).permitAll() }
                 .authorizeHttpRequests { it.anyRequest().authenticated() }
                 .oauth2ResourceServer { obj: OAuth2ResourceServerConfigurer<HttpSecurity?> -> obj.jwt(Customizer.withDefaults()) }
-                .addFilterAfter(createPolicyEnforcerFilter(), BearerTokenAuthenticationFilter::class.java)
         return http.build()
     }
 

@@ -3,6 +3,7 @@ package de.hbt.support.security
 import mu.KotlinLogging
 import org.keycloak.AuthorizationContext
 import org.keycloak.adapters.authorization.PolicyEnforcer
+import org.keycloak.adapters.authorization.integration.elytron.ServletHttpRequest
 import org.keycloak.adapters.authorization.spi.HttpRequest
 import org.keycloak.adapters.authorization.spi.HttpResponse
 import org.keycloak.authorization.client.ClientAuthorizationContext
@@ -13,7 +14,7 @@ import org.keycloak.representations.idm.authorization.Permission
 class SpringPolicyEnforcer(private val policyEnforcer: PolicyEnforcer,
                            private val policyEnforcerConfig: PolicyEnforcerConfig) {
 
-    fun enforce(request: HttpRequest, response: HttpResponse): AuthorizationContext {
+    fun enforce(request: ServletHttpRequest, response: HttpResponse): AuthorizationContext {
         if (log.isDebugEnabled) {
             log.debug("Policy enforcement is enabled. Enforcing policy decisions for path [{}].", request.uri)
         }
