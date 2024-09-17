@@ -1,6 +1,8 @@
 name: Docker image
 on:
   push:
+    branches:
+      - main
     tags:
       - '*'
   pull_request:
@@ -39,8 +41,8 @@ jobs:
         with:
           registry-type: public
       - name: Create and publish docker image
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref_type == 'tag'
         run: ./gradlew -Prelease.useLastTag=true final jib
       - name: Create and publish docker image
-        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref_type == 'branch')
         run: ./gradlew snapshot jib
