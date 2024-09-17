@@ -16,4 +16,8 @@ class ChatServiceImpl(private val conversationCache: ConversationCache) : ChatSe
 
         return response
     }
+
+    override fun getConversation(requestId: String): List<ConversationCache.PromptAndAnswer> {
+        return conversationCache.getConversation(requestId)
+    }
 }
