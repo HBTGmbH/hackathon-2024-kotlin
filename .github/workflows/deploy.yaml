@@ -1,5 +1,17 @@
 name: Deploy
 on:
+  workflow_call:
+    inputs:
+      image_version:
+        description: Tag of the application to deploy
+        default: latest
+        type: string
+        required: true
+      target:
+        description: Target overlay of deployment
+        default: test
+        type: string
+        required: true
   workflow_dispatch:
     inputs:
       image_version:

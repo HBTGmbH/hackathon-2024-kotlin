@@ -21,6 +21,9 @@ jobs:
     name: Create and publish Docker image
     runs-on: ubuntu-latest
 
+    outputs:
+      version: ${{ steps.publish-snapshot.outputs.version || steps.publish-final.outputs.version }}
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -41,12 +44,24 @@ jobs:
         with:
           registry-type: public
       - name: Create and publish docker image
+        id: publish-final
         if: github.event_name == 'push' && github.ref_type == 'tag'
         run: |
           ./gradlew -Prelease.useLastTag=true final jib
           echo "Built version: ${GITHUB_REF##*/}" > $GITHUB_STEP_SUMMARY
+          echo "version=${GITHUB_REF##*/}" > $GITHUB_OUTPUT
       - name: Create and publish docker image
+        id: publish-snapshot
         if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref_type == 'branch')
         run: |
           ./gradlew -Prelease.version="0.0.${{ github.run_number }}-SNAPSHOT" snapshot jib
           echo "Built version: 0.0.${{ github.run_number }}-SNAPSHOT" > $GITHUB_STEP_SUMMARY
+          echo "version=0.0.${{ github.run_number }}-SNAPSHOT" > $GITHUB_OUTPUT
+  deploy:
+    needs:
+      - jib
+    name: Deploy
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      target: test
+      image_version: ${{ needs.jib.outputs.version }}
