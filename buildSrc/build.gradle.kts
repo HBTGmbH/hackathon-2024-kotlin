@@ -16,4 +16,6 @@ dependencies {
     implementation(libs.plugin.gradle.versions)
     implementation(libs.plugin.version.catalog)
     implementation(libs.plugin.jib)
+    implementation(libs.plugin.openapi.generator)
+    implementation(libs.swagger.parser)
 }

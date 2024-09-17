@@ -1,5 +1,6 @@
 package de.hbt.support.configuration
 
+import de.hbt.support.interceptor.GTIInterceptor
 import de.hbt.support.interceptor.HeaderInterceptorRest
 import de.hbt.support.interceptor.LoggingInterceptorRest
 import de.hbt.support.property.RestTemplateTimeoutProperties
@@ -14,10 +15,11 @@ open class RestTemplateConfiguration {
     open fun restTemplate(
         headerInterceptorRest: HeaderInterceptorRest,
         loggingInterceptor: LoggingInterceptorRest,
+        gtiInterceptor: GTIInterceptor,
         restTemplateTimeoutProperties: RestTemplateTimeoutProperties
     ): RestTemplate {
         return RestTemplateBuilder()
-                .additionalInterceptors(headerInterceptorRest, loggingInterceptor)
+                .additionalInterceptors(headerInterceptorRest, loggingInterceptor, gtiInterceptor)
                 .setConnectTimeout(restTemplateTimeoutProperties.connectionRestTemplateTimeoutInMillis)
                 .setReadTimeout(restTemplateTimeoutProperties.readTimeoutRestTemplateInMillis)
                 .build()

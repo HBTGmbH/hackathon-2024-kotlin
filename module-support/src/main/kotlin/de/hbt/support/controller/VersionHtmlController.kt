@@ -14,7 +14,7 @@ import java.nio.file.Paths
 import java.util.jar.JarFile
 
 @Controller
-@RequestMapping(value = ["/timetable"])
+@RequestMapping(value = ["/routing"])
 class VersionHtmlController {
     @GetMapping(path = ["/version"])
     fun version(): String {

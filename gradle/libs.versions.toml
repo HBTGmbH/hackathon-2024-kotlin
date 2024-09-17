@@ -16,6 +16,7 @@ junit = "5.11.0"
 assertj = "3.26.3"
 mockito = "5.13.0"
 keycloak = "25.0.4"
+swagger-parser = "2.1.22"
 kotlin-logging = "3.0.5"
 kotlin-reflect = "2.0.20"
 kotlin-lombok = "1.9.0"
@@ -24,6 +25,7 @@ plugin-lombok = "8.0.1"
 plugin-gradle-versions = "0.46.0"
 plugin-version-catalog = "0.8.0"
 plugin-kotlin-gradle = "1.9.21"
+plugin-openapi-generator = "6.6.0"
 plugin-jib = "3.4.3"
 
 [libraries]
@@ -44,6 +46,7 @@ spring-cloud-starter-bus-kafka = { module = "org.springframework.cloud:spring-cl
 spring-cloud-starter-config = { module = "org.springframework.cloud:spring-cloud-starter-config" }
 spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server" }
 spring-cloud-leader-election = { module = "org.springframework.cloud:spring-cloud-kubernetes-fabric8-leader" }
+swagger-parser = { module = "io.swagger.parser.v3:swagger-parser", version.ref = "swagger-parser" }
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
 spring-grpc = { module = "net.devh:grpc-spring-boot-starter", version.ref = "spring-grpc" }
 spring-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-doc" }
@@ -89,6 +92,7 @@ plugin-lombok = { module = "io.freefair.gradle:lombok-plugin", version.ref = "pl
 plugin-gradle-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "plugin-gradle-versions" }
 plugin-version-catalog = { module = "nl.littlerobots.vcu:plugin", version.ref = "plugin-version-catalog" }
 plugin-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "plugin-kotlin-gradle" }
+plugin-openapi-generator = { module = "org.openapitools:openapi-generator-gradle-plugin", version.ref = "plugin-openapi-generator" }
 plugin-jib = { module = "com.google.cloud.tools:jib-gradle-plugin", version.ref = "plugin-jib" }
 
 [bundles]

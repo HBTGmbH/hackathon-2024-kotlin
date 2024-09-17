@@ -1,5 +1,6 @@
 package de.hbt.support.configuration
 
+import de.hbt.support.interceptor.GTIInterceptor
 import de.hbt.support.interceptor.HeaderInterceptorRest
 import de.hbt.support.interceptor.LoggingInterceptorRest
 import de.hbt.support.property.RestTemplateTimeoutProperties
@@ -14,11 +15,12 @@ open class RestClientConfiguration {
     open fun restClient(
         headerInterceptorRest: HeaderInterceptorRest,
         loggingInterceptor: LoggingInterceptorRest,
+        gtiInterceptor: GTIInterceptor,
         restTemplateTimeoutProperties: RestTemplateTimeoutProperties
     ): RestClient {
         return RestClient.builder()
                 .messageConverters { it.add(Jaxb2RootElementHttpMessageConverter()) }
-                .requestInterceptors { listOf(headerInterceptorRest, loggingInterceptor) }
+                .requestInterceptors { it.addAll(listOf(headerInterceptorRest, gtiInterceptor, loggingInterceptor)) }
                 .build()
     }
 }

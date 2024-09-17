@@ -82,6 +82,9 @@ resttemplate:
     connectionRestTemplateTimeoutInMillis: 5000
 
 de.hbt.support.health.greeting: "Good morning"
+de.hbt.support.gti:
+  user: hbt47
+  secret: ${GTI_CLIENT_SECRET}
 
 time:
   defaultTimeZone: Europe/Berlin

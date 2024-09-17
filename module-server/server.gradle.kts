@@ -1,6 +1,7 @@
 plugins {
     id("hbt.spring-boot-cloud-application")
     id("hbt.kotlin")
+    id("hbt.openapi")
     kotlin("kapt")
 }
 
