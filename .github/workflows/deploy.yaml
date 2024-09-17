@@ -36,4 +36,4 @@ jobs:
       image_version: ${{ inputs.image_version }}
       target: ${{ inputs.target }}
     secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+      ACTIONS_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
