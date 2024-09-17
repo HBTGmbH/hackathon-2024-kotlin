@@ -48,5 +48,5 @@ jobs:
       - name: Create and publish docker image
         if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref_type == 'branch')
         run: |
-          "./gradlew -Prelease.version=0.0.${{ github.run_number }}-SNAPSHOT snapshot jib"
+          ./gradlew -Prelease.version="0.0.${{ github.run_number }}-SNAPSHOT" snapshot jib
           echo "Built version: 0.0.${{ github.run_number }}-SNAPSHOT" > $GITHUB_STEP_SUMMARY
