@@ -67,5 +67,5 @@ jobs:
       target: test
       image_version: ${{ needs.jib.outputs.version }}
     secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+      ACTIONS_GITHUB_TOKEN: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
 
