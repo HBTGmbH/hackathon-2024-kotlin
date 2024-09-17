@@ -1,13 +1,18 @@
 package de.hbt.routing.service
 
+import mu.KotlinLogging
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import java.nio.charset.StandardCharsets
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
 import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 class GTIWrapper {
@@ -28,8 +33,18 @@ class GTIWrapper {
             mac.init(secretKeySpec)
             val digest = mac.doFinal(body.toByteArray(StandardCharsets.UTF_8))
             return Base64.getEncoder().encodeToString(digest)
-        } catch (e: Exception) {
-            throw RuntimeException("Failed to calculate hmac-sha1", e)
+        } catch (e: IllegalArgumentException) {
+            logger.error("Error computing hmac", e)
+            return ""
+        } catch (e: IllegalStateException) {
+            logger.error("Error computing hmac", e)
+            return ""
+        } catch (e: InvalidKeyException) {
+            logger.error("Error computing hmac", e)
+            return ""
+        } catch (e: NoSuchAlgorithmException) {
+            logger.error("Error computing hmac", e)
+            return ""
         }
     }
 }
