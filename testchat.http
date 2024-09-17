@@ -1,0 +1,11 @@
+### Send Prompt to ChatGPT Endpoint
+POST http://localhost:8080/chat/send
+Content-Type: application/json
+
+{
+  "requestId": "d2439d30-69bd-4136-b4b5-0d7b87074169",
+  "prompt": "Tell me a joke about Kotlin"
+}
+###
+### Retrieve Complete Conversation
+GET http://localhost:8080/chat/conversation/d2439d30-69bd-4136-b4b5-0d7b87074169
