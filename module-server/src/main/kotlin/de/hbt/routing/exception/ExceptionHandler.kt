@@ -13,6 +13,6 @@ class ExceptionHandler {
         val errorMessage = AppController.ErrorMessage(AppController.Message(requestId = e.requestId,
                 content = e.localizedMessage, role = "assistant"))
 
-        return ResponseEntity(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity(errorMessage, e.status)
     }
 }
