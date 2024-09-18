@@ -36,7 +36,7 @@ Give a short and precise advise in {{LOCALE}}. It should include which exact tra
 
     fun gpt(jsonString: String, locale: Locale): String {
         val openAIResponse = openAIService.chat(ChatRequest.chatRequest(
-                SYSTEM_PROMPT.replace("{{LOCALE}}", locale.displayLanguage),
+                SYSTEM_PROMPT.replace("{{LOCALE}}", locale.getDisplayLanguage(Locale.ENGLISH)),
                 jsonString))
         if (openAIResponse.choices.isEmpty()) {
             return "Empty response"
