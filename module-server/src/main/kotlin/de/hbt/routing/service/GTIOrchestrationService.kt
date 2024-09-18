@@ -1,6 +1,6 @@
 package de.hbt.routing.service
 
-import com.nimbusds.jose.shaded.gson.Gson
+import com.fasterxml.jackson.databind.ObjectMapper
 import de.hbt.geofox.gti.model.GRResponse
 import de.hbt.geofox.gti.model.GTITime
 import de.hbt.geofox.gti.model.SDName
@@ -9,10 +9,13 @@ import de.hbt.routing.openai.dto.ChatRequest
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @Service
 class GTIOrchestrationService(private val gtiService: GTIService,
-                              private val openAIService: OpenAIService) {
+                              private val openAIService: OpenAIService,
+                              private val objectMapper: ObjectMapper) {
 
     companion object {
         private val log = KotlinLogging.logger {}
@@ -26,8 +29,7 @@ Your goal is to receive a json object and convert the information to natural lan
 
     fun orchestrate(input: ParsedInfo): String {
         val grResponse = doTheGRRequest(input)
-        val gson = Gson()
-        val jsonString = gson.toJson(grResponse)
+        val jsonString = objectMapper.writeValueAsString(grResponse)
         return gpt(jsonString)
     }
 
@@ -45,7 +47,7 @@ Your goal is to receive a json object and convert the information to natural lan
     fun doTheGRRequest(parsedJson: ParsedInfo): GRResponse {
         val start = SDName(name = parsedJson.from, type = SDName.Type.uNKNOWN)
         val dest = SDName(name = parsedJson.to, type = SDName.Type.uNKNOWN)
-        val time = GTITime(date = parsedJson.time.toLocalDate().toString(), time = parsedJson.time.toLocalTime().toString())
+        val time = GTITime(date = parsedJson.time.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)), time = parsedJson.time.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)))
         val gtiResponse = gtiService.getRoute(start, dest, time)
         return gtiResponse
     }

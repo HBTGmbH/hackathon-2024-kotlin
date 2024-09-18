@@ -2,6 +2,7 @@ package de.hbt.routing.configuration
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -31,6 +32,7 @@ open class OpenAIRestTemplateConfig(@Value("\${openai.api.token}") private val a
         return ObjectMapper().apply {
             configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             registerKotlinModule()
+            registerModule(JavaTimeModule())
         }
     }
 }
