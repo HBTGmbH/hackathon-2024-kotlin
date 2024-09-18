@@ -48,8 +48,10 @@ For example:
 Input: How do I get from New York to Boston at 9 PM?
 Output: {"start": "New York", "destination": "Boston", "time": "${TEST_TIME.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)}"}
 Assume that the user means the next AM or PM time and adjust the time by adding 12 hours if necessary.
-Always format the time as a UTC timestamp. Assumes that the current time is ${NOW.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)}.
-If the user does not specify a time, mark it as null.
+Always format the time as a UTC timestamp.
+If the user asks for the current time (now, today, jetzt, heute), use ${NOW.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)}.
+If only a day is given, assume the current time at that day.
+If no time can be deducted, mark it as null.
 
 If the input is ambiguous, do your best to infer the meaning and provide the most likely interpretation.
 
