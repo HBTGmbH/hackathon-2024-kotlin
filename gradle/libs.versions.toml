@@ -27,6 +27,7 @@ plugin-version-catalog = "0.8.0"
 plugin-kotlin-gradle = "1.9.21"
 plugin-openapi-generator = "6.6.0"
 plugin-jib = "3.4.3"
+gson = "2.8.5"
 
 [libraries]
 spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
@@ -94,6 +95,7 @@ plugin-version-catalog = { module = "nl.littlerobots.vcu:plugin", version.ref = 
 plugin-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "plugin-kotlin-gradle" }
 plugin-openapi-generator = { module = "org.openapitools:openapi-generator-gradle-plugin", version.ref = "plugin-openapi-generator" }
 plugin-jib = { module = "com.google.cloud.tools:jib-gradle-plugin", version.ref = "plugin-jib" }
+gson = {module = "com.google.code.gson:gson", version.ref = "gson"}
 
 [bundles]
 logging = [
@@ -127,6 +129,7 @@ spring-boot-server = [
     "spring-cloud-starter",
     "spring-sec",
     "spring-ui",
+    "gson"
 ]
 spring-boot-security = [
     "keycloak-core",
