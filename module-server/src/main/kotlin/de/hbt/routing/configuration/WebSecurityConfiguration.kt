@@ -77,6 +77,7 @@ open class WebSecurityConfiguration(private val matcher: LocalHostMatcher) {
                 "/api-docs/v1/routing/**",
                 "/error",
                 "/routing/version",
+                "/v1/chat/**",
                 "/gti/**",
         )
         private val PATHS = buildPathConfigs()
