@@ -8,7 +8,7 @@ import java.util.*
 class ChatServiceImpl(private val conversationCache: ConversationCache) : ChatService {
 
     override fun processPrompt(requestId: String, prompt: String): ChatService.Response {
-        val uuid = if (requestId.isBlank()) UUID.randomUUID().toString() else requestId
+        val uuid = requestId.ifBlank { UUID.randomUUID().toString() }
         val mockResponse = "This is a mock response for prompt: $prompt"
         val response = ChatService.Response(uuid, mockResponse)
 

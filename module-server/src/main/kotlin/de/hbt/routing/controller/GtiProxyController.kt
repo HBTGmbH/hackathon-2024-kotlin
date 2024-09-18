@@ -1,6 +1,7 @@
-package de.hbt.routing.gti
+package de.hbt.routing.controller
 
 import de.hbt.geofox.gti.model.InitResponse
+import de.hbt.routing.service.GTIService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
