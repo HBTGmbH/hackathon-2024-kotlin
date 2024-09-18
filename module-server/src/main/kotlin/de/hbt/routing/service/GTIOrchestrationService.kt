@@ -28,6 +28,10 @@ Your goal is to receive a json object and convert the information to natural lan
         val grResponse = doTheGRRequest(input)
         val gson = Gson()
         val jsonString = gson.toJson(grResponse)
+        return gpt(jsonString)
+    }
+
+    fun gpt(jsonString: String): String {
         val openAIResponse = openAIService.chat(ChatRequest.chatRequest(SYSTEM_PROMPT, jsonString))
         if (openAIResponse.choices.isEmpty()) {
             return "Empty response"
