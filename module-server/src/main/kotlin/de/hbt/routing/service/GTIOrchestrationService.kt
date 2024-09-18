@@ -8,6 +8,7 @@ import de.hbt.routing.openai.OpenAIService
 import de.hbt.routing.openai.dto.ChatRequest
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
+import java.time.OffsetDateTime
 
 @Service
 class GTIOrchestrationService(private val gtiService: GTIService,
@@ -21,7 +22,7 @@ Your goal is to receive a json object and convert the information to natural lan
         """
     }
 
-    data class ParsedInfo(val from: String, val to: String, val time: String)
+    data class ParsedInfo(val from: String, val to: String, val time: OffsetDateTime)
 
     fun orchestrate(input: ParsedInfo): String {
         val grResponse = doTheGRRequest(input)
@@ -40,7 +41,7 @@ Your goal is to receive a json object and convert the information to natural lan
     fun doTheGRRequest(parsedJson: ParsedInfo): GRResponse {
         val start = SDName(name = parsedJson.from, type = SDName.Type.uNKNOWN)
         val dest = SDName(name = parsedJson.to, type = SDName.Type.uNKNOWN)
-        val time = GTITime(date = "heute", time = parsedJson.time)
+        val time = GTITime(date = parsedJson.time.toLocalDate().toString(), time = parsedJson.time.toLocalTime().toString())
         val gtiResponse = gtiService.getRoute(start, dest, time)
         return gtiResponse
     }

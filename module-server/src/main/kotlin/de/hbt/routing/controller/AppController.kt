@@ -14,6 +14,7 @@ import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.OffsetDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger {}
@@ -28,7 +29,7 @@ class AppController(private val routingParametersService: RoutingParametersServi
     data class RouteRequest(val requestId: String, val content: String)
     data class RouteSuggestion(val requestId: String, val content: RoutingParametersService.RoutingParameters)
     data class ErrorMessage(val requestId: String, val content: String)
-    data class RoutingParameters(val start: String, val destination: String, val time: String)
+    data class RoutingParameters(val start: String, val destination: String, val time: OffsetDateTime)
     data class CalculationRequest(val requestId: String, val content: RoutingParameters)
     data class CalculationResult(val requestId: String, val content: String)
 
