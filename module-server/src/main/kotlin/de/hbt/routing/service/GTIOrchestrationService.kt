@@ -20,8 +20,8 @@ class GTIOrchestrationService(private val gtiService: GTIService,
     companion object {
         private val log = KotlinLogging.logger {}
         private const val SYSTEM_PROMPT = """
-You are a smart assistant that helps users with parsing some routing information.
-Your goal is to receive a json object and convert the information to natural language.
+You are a smart assistant that helps users with routing requests. Your goal is to give the user an advise which route to take based on the API response of a routing service.
+Give a short and precise advise in German about the best route. It should include which exact transport line to take (Bus, U-Bahn, S-Bahn), where to change and when they arrive at the destination.
         """
     }
 
