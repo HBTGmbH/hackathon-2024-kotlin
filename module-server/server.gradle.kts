@@ -13,4 +13,5 @@ dependencies {
     kapt(libs.mapstruct.processor)
 
     implementation(libs.bundles.spring.boot.security)
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.+")
 }
