@@ -24,13 +24,13 @@ private val logger = KotlinLogging.logger {}
 class AppController(private val routingParametersService: RoutingParametersService,
                     private val gtiOrchestrationService: GTIOrchestrationService) {
 
-    data class Message<T>(val requestId: String, val content: T, val role: String)
-    data class RouteRequest(val message: Message<String>)
-    data class RouteSuggestion(val message: Message<RoutingParametersService.RoutingParameters>)
-    data class ErrorMessage(val message: Message<String>)
+    data class Message<T>(val requestId: String, val content: T)
+    data class RouteRequest(val requestId: String, val content: String)
+    data class RouteSuggestion(val requestId: String, val content: RoutingParametersService.RoutingParameters)
+    data class ErrorMessage(val requestId: String, val content: String)
     data class RoutingParameters(val start: String, val destination: String, val time: String)
-    data class CalculationRequest(val message: Message<RoutingParameters>)
-    data class CalculationResult(val message: Message<String>)
+    data class CalculationRequest(val requestId: String, val content: RoutingParameters)
+    data class CalculationResult(val requestId: String, val content: String)
 
     data class ConversationResponse(val requestId: String, val dialogues: List<ConversationCache.PromptAndAnswer>)
 
@@ -57,16 +57,14 @@ class AppController(private val routingParametersService: RoutingParametersServi
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/route")
     fun submitRouteRequest(@RequestBody request: RouteRequest): ResponseEntity<RouteSuggestion> {
-        val uuid = request.message.requestId.ifBlank { UUID.randomUUID().toString() }
+        val uuid = request.requestId.ifBlank { UUID.randomUUID().toString() }
         return try {
             val response = routingParametersService.getRoutingParameters(requestId = uuid,
-                    prompt = request.message.content)
-            val successMessage = Message(requestId = uuid, content = response,
-                    role = "assistant")
-            ResponseEntity.ok(RouteSuggestion(message = successMessage))
+                    prompt = request.content)
+            val successMessage = RouteSuggestion(requestId = uuid, content = response)
+            ResponseEntity.ok(successMessage)
         } catch (e: Exception) {
-            throw ChatException(uuid, HttpStatus.INTERNAL_SERVER_ERROR,
-                    e.localizedMessage, e)
+            throw ChatException(uuid, HttpStatus.INTERNAL_SERVER_ERROR, e.localizedMessage, e)
         }
     }
 
@@ -94,15 +92,14 @@ class AppController(private val routingParametersService: RoutingParametersServi
     @PostMapping("/calculation")
     fun submitCalculationRequest(@RequestBody request: CalculationRequest): ResponseEntity<CalculationResult> {
         return try {
-            val routeParameters = request.message.content
+            val routeParameters = request.content
             val parsedInfo = GTIOrchestrationService.ParsedInfo(routeParameters.start,
                     routeParameters.destination, routeParameters.time)
             val response = gtiOrchestrationService.orchestrate(parsedInfo)
-            val successMessage = Message(requestId = request.message.requestId, content = response,
-                    role = "assistant")
-            ResponseEntity.ok(CalculationResult(message = successMessage))
+            val successMessage = CalculationResult(requestId = request.requestId, content = response)
+            ResponseEntity.ok(successMessage)
         } catch (e: Exception) {
-            throw ChatException(request.message.requestId, HttpStatus.INTERNAL_SERVER_ERROR,
+            throw ChatException(request.requestId, HttpStatus.INTERNAL_SERVER_ERROR,
                     e.localizedMessage, e)
         }
     }
