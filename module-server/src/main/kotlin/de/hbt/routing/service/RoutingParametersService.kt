@@ -1,28 +1,30 @@
 package de.hbt.routing.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import de.hbt.routing.openai.OpenAIService
 import de.hbt.routing.openai.dto.ChatRequest.Companion.chatRequest
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
-class ChatServiceImpl(private val conversationCache: ConversationCache, private val openAIService: OpenAIService) : ChatService {
+class RoutingParametersService(private val conversationCache: ConversationCache, private val openAIService: OpenAIService, private val objectMapper: ObjectMapper) {
 
-    override fun processPrompt(requestId: String, prompt: String): ChatService.Response {
-        val uuid = requestId.ifBlank { UUID.randomUUID().toString() }
+    data class RoutingParameters(val start: String?, val destination: String?, val time: String?) {}
+
+    fun getRoutingParameters(requestId: String, prompt: String): RoutingParameters {
         val request = chatRequest(prompt, SYSTEM_PROMPT)
         val openAIResponse = openAIService.chat(request)
         if (openAIResponse.choices.isEmpty()) {
-            return ChatService.Response(uuid, "Empty response")
+            return RoutingParameters("", "", "")
         }
-        conversationCache.addToConversation(uuid, ConversationCache.PromptAndAnswer(request, openAIResponse))
+        conversationCache.addToConversation(requestId, ConversationCache.PromptAndAnswer(request, openAIResponse))
 
-        // return the first response
+        // return the first response as JSON
         val content = openAIResponse.choices.first().message.content
-        return ChatService.Response(uuid, content)
+        val routingParameters = objectMapper.readValue(content, RoutingParameters::class.java)
+        return routingParameters
     }
 
-    override fun getConversation(requestId: String): List<ConversationCache.PromptAndAnswer> {
+    fun getConversation(requestId: String): List<ConversationCache.PromptAndAnswer> {
         return conversationCache.getConversation(requestId)
     }
 

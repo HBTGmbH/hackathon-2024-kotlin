@@ -1,7 +1,7 @@
 package de.hbt.routing.controller
 
-import de.hbt.routing.service.ChatService
 import de.hbt.routing.service.ConversationCache
+import de.hbt.routing.service.RoutingParametersService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -11,16 +11,17 @@ import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/v1/chat")
 @Tag(name = "Route Chat", description = "all requests that support sending route requests")
-class AppController(private val chatService: ChatService) {
+class AppController(private val routingParametersService: RoutingParametersService) {
 
-    data class ChatRequest(val requestId: String, val prompt: String)
-    data class ChatResponse(val requestId: String, val answer: String)
+    data class RoutingParametersRequest(val requestId: String, val prompt: String)
+    data class RoutingParametersResponse(val requestId: String, val routingParameters: RoutingParametersService.RoutingParameters?)
     data class ConversationResponse(val requestId: String, val dialogues: List<ConversationCache.PromptAndAnswer>)
 
     @Operation(
@@ -29,18 +30,19 @@ class AppController(private val chatService: ChatService) {
                     responseCode = "200",
                     description = "Route request successful",
                     content = [Content(
-                            schema = Schema(implementation = ChatResponse::class)
+                            schema = Schema(implementation = RoutingParametersResponse::class)
                     )]
             )]
     )
     @PostMapping("/send")
-    fun sendPrompt(@RequestBody request: ChatRequest): ResponseEntity<ChatResponse> {
+    fun routingParametersRequest(@RequestBody request: RoutingParametersRequest): ResponseEntity<RoutingParametersResponse> {
         return try {
-            val response = chatService.processPrompt(requestId = request.requestId, prompt = request.prompt)
-            ResponseEntity.ok(ChatResponse(response.requestId, response.response))
+            val uuid = request.requestId.ifBlank { UUID.randomUUID().toString() }
+            val response = routingParametersService.getRoutingParameters(requestId = uuid, prompt = request.prompt)
+            ResponseEntity.ok(RoutingParametersResponse(uuid, response))
         } catch (e: Exception) {
             logger.error(e) { "Exception occurred while processing request" }
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ChatResponse(request.requestId, "Error: ${e.message}"))
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RoutingParametersResponse(request.requestId, null))
         }
     }
 
@@ -57,7 +59,7 @@ class AppController(private val chatService: ChatService) {
     @GetMapping("/conversation/{requestId}")
     fun getConversation(@PathVariable requestId: String): ResponseEntity<ConversationResponse> {
         return try {
-            val dialogues = chatService.getConversation(requestId)
+            val dialogues = routingParametersService.getConversation(requestId)
             ResponseEntity.ok(ConversationResponse(requestId, dialogues))
         } catch (e: Exception) {
             logger.error(e) { "Exception occurred while retrieving conversation for requestId: $requestId" }
