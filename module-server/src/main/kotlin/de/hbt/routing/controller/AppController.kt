@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
@@ -52,6 +53,8 @@ class AppController(private val routingParametersService: RoutingParametersServi
                 ),
             ]
     )
+    @SecurityRequirement(name = "oauth2")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/route")
     fun submitRouteRequest(@RequestBody request: RouteRequest): ResponseEntity<RouteSuggestion> {
         val uuid = request.message.requestId.ifBlank { UUID.randomUUID().toString() }
@@ -86,6 +89,8 @@ class AppController(private val routingParametersService: RoutingParametersServi
                 ),
             ]
     )
+    @SecurityRequirement(name = "oauth2")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/calculation")
     fun submitCalculationRequest(@RequestBody request: CalculationRequest): ResponseEntity<CalculationResult> {
         return try {
@@ -112,6 +117,8 @@ class AppController(private val routingParametersService: RoutingParametersServi
                     )]
             )]
     )
+    @SecurityRequirement(name = "oauth2")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/conversation/{requestId}")
     fun getConversation(@PathVariable requestId: String): ResponseEntity<ConversationResponse> {
         return try {
