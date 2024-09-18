@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import de.hbt.routing.openai.OpenAIService
 import de.hbt.routing.openai.dto.ChatRequest.Companion.chatRequest
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Service
 class RoutingParametersService(private val conversationCache: ConversationCache, private val openAIService: OpenAIService, private val objectMapper: ObjectMapper) {
@@ -32,6 +32,9 @@ class RoutingParametersService(private val conversationCache: ConversationCache,
     }
 
     companion object {
+        private val ZONE = ZoneId.of("Europe/Berlin")
+        private val NOW = LocalDateTime.now().atZone(ZONE)
+        private val TEST_TIME = NOW.withHour(21).withMinute(0).withSecond(0).withNano(0)
         private val SYSTEM_PROMPT = """
 You are a smart assistant that helps users with routing requests. Your goal is to extract three key parameters from each user query: the start location, destination location, and time. When a user provides a routing request, parse the following:
 
@@ -43,9 +46,9 @@ Your task is to always output a structured JSON object with these three fields. 
 For example:
 
 Input: How do I get from New York to Boston at 9 PM?
-Output: {"start": "New York", "destination": "Boston", "time": "${LocalDate.now()}T21:00:00Z"}
+Output: {"start": "New York", "destination": "Boston", "time": "${TEST_TIME.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)}"}
 Assume that the user means the next AM or PM time and adjust the time by adding 12 hours if necessary.
-Always format the time as a UTC timestamp. Assumes that the current time is ${LocalDateTime.now().atOffset(ZoneOffset.UTC)}.
+Always format the time as a UTC timestamp. Assumes that the current time is ${NOW.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)}.
 If the user does not specify a time, mark it as null.
 
 If the input is ambiguous, do your best to infer the meaning and provide the most likely interpretation.
