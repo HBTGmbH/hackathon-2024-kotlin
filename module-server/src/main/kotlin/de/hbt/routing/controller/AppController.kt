@@ -1,6 +1,6 @@
 package de.hbt.routing.controller
 
-import de.hbt.routing.exception.RouteRequestException
+import de.hbt.routing.exception.ChatException
 import de.hbt.routing.service.ConversationCache
 import de.hbt.routing.service.GTIOrchestrationService
 import de.hbt.routing.service.RoutingParametersService
@@ -27,7 +27,8 @@ class AppController(private val routingParametersService: RoutingParametersServi
     data class RouteRequest(val message: Message<String>)
     data class RouteSuggestion(val message: Message<RoutingParametersService.RoutingParameters>)
     data class ErrorMessage(val message: Message<String>)
-    data class CalculationRequest(val message: Message<RoutingParametersService.RoutingParameters>)
+    data class RoutingParameters(val start: String, val destination: String, val time: String)
+    data class CalculationRequest(val message: Message<RoutingParameters>)
     data class CalculationResult(val message: Message<String>)
 
     data class ConversationResponse(val requestId: String, val dialogues: List<ConversationCache.PromptAndAnswer>)
@@ -53,15 +54,15 @@ class AppController(private val routingParametersService: RoutingParametersServi
     )
     @PostMapping("/route")
     fun submitRouteRequest(@RequestBody request: RouteRequest): ResponseEntity<RouteSuggestion> {
+        val uuid = request.message.requestId.ifBlank { UUID.randomUUID().toString() }
         return try {
-            val uuid = request.message.requestId.ifBlank { UUID.randomUUID().toString() }
             val response = routingParametersService.getRoutingParameters(requestId = uuid,
                     prompt = request.message.content)
             val successMessage = Message(requestId = uuid, content = response,
                     role = "assistant")
             ResponseEntity.ok(RouteSuggestion(message = successMessage))
         } catch (e: Exception) {
-            throw RouteRequestException(request.message.requestId, HttpStatus.INTERNAL_SERVER_ERROR,
+            throw ChatException(uuid, HttpStatus.INTERNAL_SERVER_ERROR,
                     e.localizedMessage, e)
         }
     }
@@ -89,14 +90,14 @@ class AppController(private val routingParametersService: RoutingParametersServi
     fun submitCalculationRequest(@RequestBody request: CalculationRequest): ResponseEntity<CalculationResult> {
         return try {
             val routeParameters = request.message.content
-            val parsedInfo = GTIOrchestrationService.ParsedInfo(routeParameters.start!!,
-                    routeParameters.destination!!, routeParameters.time!!)
+            val parsedInfo = GTIOrchestrationService.ParsedInfo(routeParameters.start,
+                    routeParameters.destination, routeParameters.time)
             val response = gtiOrchestrationService.orchestrate(parsedInfo)
             val successMessage = Message(requestId = request.message.requestId, content = response,
                     role = "assistant")
             ResponseEntity.ok(CalculationResult(message = successMessage))
         } catch (e: Exception) {
-            throw RouteRequestException(request.message.requestId, HttpStatus.INTERNAL_SERVER_ERROR,
+            throw ChatException(request.message.requestId, HttpStatus.INTERNAL_SERVER_ERROR,
                     e.localizedMessage, e)
         }
     }
