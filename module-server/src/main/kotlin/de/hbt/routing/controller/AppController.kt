@@ -1,10 +1,9 @@
 package de.hbt.routing.controller
 
 import de.hbt.routing.exception.RouteRequestException
-import de.hbt.routing.service.ChatService
 import de.hbt.routing.service.ConversationCache
-import de.hbt.routing.service.RoutingParametersService
 import de.hbt.routing.service.GTIOrchestrationService
+import de.hbt.routing.service.RoutingParametersService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -14,7 +13,6 @@ import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
 import java.util.*
 
 private val logger = KotlinLogging.logger {}
@@ -26,15 +24,12 @@ class AppController(private val routingParametersService: RoutingParametersServi
                     private val gtiOrchestrationService: GTIOrchestrationService) {
 
     data class Message<T>(val requestId: String, val content: T, val role: String)
-    data class RouteParameters(val start: String, val destination: String, val dateTime: String)
     data class RouteRequest(val message: Message<String>)
-    data class RouteSuggestion(val message: Message<RouteParameters>)
+    data class RouteSuggestion(val message: Message<RoutingParametersService.RoutingParameters>)
     data class ErrorMessage(val message: Message<String>)
-    data class CalculationRequest(val message: Message<RouteParameters>)
+    data class CalculationRequest(val message: Message<RoutingParametersService.RoutingParameters>)
     data class CalculationResult(val message: Message<String>)
 
-    data class RoutingParametersRequest(val requestId: String, val prompt: String)
-    data class RoutingParametersResponse(val requestId: String, val routingParameters: RoutingParametersService.RoutingParameters?)
     data class ConversationResponse(val requestId: String, val dialogues: List<ConversationCache.PromptAndAnswer>)
 
     @Operation(
@@ -60,10 +55,9 @@ class AppController(private val routingParametersService: RoutingParametersServi
     fun submitRouteRequest(@RequestBody request: RouteRequest): ResponseEntity<RouteSuggestion> {
         return try {
             val uuid = request.message.requestId.ifBlank { UUID.randomUUID().toString() }
-            val response = routingParametersService.getRoutingParameters(requestId = request.message.requestId,
+            val response = routingParametersService.getRoutingParameters(requestId = uuid,
                     prompt = request.message.content)
-            val routeParameters = RouteParameters("", "", "")
-            val successMessage = Message(requestId = response.requestId, content = routeParameters,
+            val successMessage = Message(requestId = uuid, content = response,
                     role = "assistant")
             ResponseEntity.ok(RouteSuggestion(message = successMessage))
         } catch (e: Exception) {
@@ -95,7 +89,8 @@ class AppController(private val routingParametersService: RoutingParametersServi
     fun submitCalculationRequest(@RequestBody request: CalculationRequest): ResponseEntity<CalculationResult> {
         return try {
             val routeParameters = request.message.content
-            val parsedInfo = GTIOrchestrationService.ParsedInfo(routeParameters.start, routeParameters.destination, routeParameters.dateTime)
+            val parsedInfo = GTIOrchestrationService.ParsedInfo(routeParameters.start!!,
+                    routeParameters.destination!!, routeParameters.time!!)
             val response = gtiOrchestrationService.orchestrate(parsedInfo)
             val successMessage = Message(requestId = request.message.requestId, content = response,
                     role = "assistant")
