@@ -82,6 +82,7 @@ resttemplate:
     connectionRestTemplateTimeoutInMillis: 5000
 
 de.hbt.support.health.greeting: "Good morning"
+de.hbt.routing.openAIAPIKey: ${OPENAI_API_TOKEN}
 de.hbt.support.gti:
   user: hbt47
   secret: ${GTI_CLIENT_SECRET}
