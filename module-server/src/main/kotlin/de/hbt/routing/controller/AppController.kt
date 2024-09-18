@@ -30,7 +30,7 @@ class AppController(private val routingParametersService: RoutingParametersServi
     data class RouteSuggestion(val requestId: String, val content: RoutingParametersService.RoutingParameters)
     data class ErrorMessage(val requestId: String, val content: String)
     data class RoutingParameters(val start: String, val destination: String, val time: OffsetDateTime)
-    data class CalculationRequest(val requestId: String, val content: RoutingParameters)
+    data class CalculationRequest(val requestId: String, val content: RoutingParameters, val localeId: String?)
     data class CalculationResult(val requestId: String, val content: String)
 
     data class ConversationResponse(val requestId: String, val dialogues: List<ConversationCache.PromptAndAnswer>)
@@ -95,7 +95,7 @@ class AppController(private val routingParametersService: RoutingParametersServi
         return try {
             val routeParameters = request.content
             val parsedInfo = GTIOrchestrationService.ParsedInfo(routeParameters.start,
-                    routeParameters.destination, routeParameters.time)
+                    routeParameters.destination, routeParameters.time, Locale.of(request.localeId) ?: Locale.GERMAN)
             val response = gtiOrchestrationService.orchestrate(parsedInfo)
             val successMessage = CalculationResult(requestId = request.requestId, content = response)
             ResponseEntity.ok(successMessage)
