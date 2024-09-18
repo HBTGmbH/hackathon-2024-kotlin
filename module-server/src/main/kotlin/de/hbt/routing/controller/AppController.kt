@@ -1,8 +1,7 @@
 package de.hbt.routing.controller
 
-import de.hbt.geofox.gti.model.InitResponse
 import de.hbt.routing.service.ChatService
-import de.hbt.routing.service.helper.ConversationCache
+import de.hbt.routing.service.ConversationCache
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema

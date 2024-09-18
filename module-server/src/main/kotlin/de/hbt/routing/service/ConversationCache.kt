@@ -1,12 +1,14 @@
-package de.hbt.routing.service.helper
+package de.hbt.routing.service
 
+import de.hbt.routing.openai.dto.ChatRequest
+import de.hbt.routing.openai.dto.ChatResponse
 import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class ConversationCache {
 
-    data class PromptAndAnswer(val prompt: String, val answer: String)
+    data class PromptAndAnswer(val prompt: ChatRequest, val answer: ChatResponse)
 
     private val conversations = ConcurrentHashMap<String, MutableList<PromptAndAnswer>>()
 
