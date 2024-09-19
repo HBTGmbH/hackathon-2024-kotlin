@@ -1,6 +1,7 @@
 package de.hbt.routing.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.hbt.geofox.gti.model.Coordinate
 import de.hbt.geofox.gti.model.GRResponse
 import de.hbt.geofox.gti.model.GTITime
 import de.hbt.geofox.gti.model.SDName
@@ -13,6 +14,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
+import java.util.regex.Pattern
 
 @Service
 class GTIOrchestrationService(private val gtiService: GTIService,
@@ -22,9 +24,10 @@ class GTIOrchestrationService(private val gtiService: GTIService,
 
     companion object {
         private val log = KotlinLogging.logger {}
-        val GTI_ZONE = ZoneId.of("Europe/Berlin")
-        val GTI_DATE_FORMATTER = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
-        val GTI_TIME_FORMATTER = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
+        val GTI_ZONE: ZoneId = ZoneId.of("Europe/Berlin")
+        val GTI_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
+        val GTI_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
+        val WGS84_LAT_LON_PATTERN: Pattern = Pattern.compile("lat:\\s*[+]?(-?\\d*[,.]?\\d+)\\s+lon:\\s*[+]?(-?\\d*[,.]?\\d+)", Pattern.CASE_INSENSITIVE)
     }
 
     data class ParsedInfo(val from: String, val to: String, val time: OffsetDateTime, val locale: Locale)
@@ -35,7 +38,7 @@ class GTIOrchestrationService(private val gtiService: GTIService,
         return gpt(jsonString, input.locale)
     }
 
-    fun gpt(jsonString: String, locale: Locale): String {
+    private fun gpt(jsonString: String, locale: Locale): String {
         val openAIResponse = openAIService.chat(ChatRequest.chatRequest(
                 generateSystemPrompt().replace("{{LOCALE}}", locale.getDisplayLanguage(Locale.ENGLISH)),
                 jsonString))
@@ -56,12 +59,22 @@ Give a short and precise advise in {{LOCALE}}. It should include which exact tra
     }
 
     private fun doTheGRRequest(parsedJson: ParsedInfo): GRResponse {
-        val start = SDName(name = parsedJson.from, type = SDName.Type.uNKNOWN)
-        val dest = SDName(name = parsedJson.to, type = SDName.Type.uNKNOWN)
+
+        val start = buildSDName(parsedJson.from)
+        val dest = buildSDName(parsedJson.to)
         val date = parsedJson.time.format(GTI_DATE_FORMATTER)
         val time = parsedJson.time.format(GTI_TIME_FORMATTER)
         val gtiTime = GTITime(date = date, time = time)
         val gtiResponse = gtiService.getRoute(start, dest, gtiTime)
         return gtiResponse
+    }
+
+    private fun buildSDName(value: String): SDName {
+        val matcher = WGS84_LAT_LON_PATTERN.matcher(value)
+        return if (matcher.matches()) {
+            SDName(coordinate = Coordinate(y = matcher.group(1).toDouble(), x = matcher.group(2).toDouble()), type = SDName.Type.cOORDINATE)
+        } else {
+            SDName(name = value, type = SDName.Type.uNKNOWN)
+        }
     }
 }
