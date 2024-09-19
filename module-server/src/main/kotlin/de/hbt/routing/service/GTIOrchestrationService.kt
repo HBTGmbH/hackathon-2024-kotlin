@@ -25,10 +25,6 @@ class GTIOrchestrationService(private val gtiService: GTIService,
         val GTI_ZONE = ZoneId.of("Europe/Berlin")
         val GTI_DATE_FORMATTER = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
         val GTI_TIME_FORMATTER = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
-        private const val SYSTEM_PROMPT = """
-You are a smart assistant that helps users with routing requests. Your goal is to give the user an advise which route to take based on the API response of a routing service.
-Give a short and precise advise in {{LOCALE}}. It should include which exact transport line to take (Bus, U-Bahn, S-Bahn), where to change and when they arrive at the destination.
-        """
     }
 
     data class ParsedInfo(val from: String, val to: String, val time: OffsetDateTime, val locale: Locale)
@@ -41,7 +37,7 @@ Give a short and precise advise in {{LOCALE}}. It should include which exact tra
 
     fun gpt(jsonString: String, locale: Locale): String {
         val openAIResponse = openAIService.chat(ChatRequest.chatRequest(
-                SYSTEM_PROMPT.replace("{{LOCALE}}", locale.getDisplayLanguage(Locale.ENGLISH)),
+                generateSystemPrompt().replace("{{LOCALE}}", locale.getDisplayLanguage(Locale.ENGLISH)),
                 jsonString))
         if (openAIResponse.choices.isEmpty()) {
             return "Empty response"
@@ -50,6 +46,13 @@ Give a short and precise advise in {{LOCALE}}. It should include which exact tra
         // return the first response
         val content = openAIResponse.choices.first().message.content
         return content
+    }
+
+    private fun generateSystemPrompt(): String {
+        return """
+You are a smart assistant that helps users with routing requests. Your goal is to give the user an advise which route to take based on the API response of a routing service.
+Give a short and precise advise in {{LOCALE}}. It should include which exact transport line to take (Bus, U-Bahn, S-Bahn), where to change and when they arrive at the destination.
+        """
     }
 
     private fun doTheGRRequest(parsedJson: ParsedInfo): GRResponse {
