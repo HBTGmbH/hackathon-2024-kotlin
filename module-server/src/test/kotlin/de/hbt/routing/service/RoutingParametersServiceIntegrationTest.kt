@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -43,6 +45,27 @@ class RoutingParametersServiceIntegrationTest {
         assertThat(routingParameters)
                 .isNotNull
                 .isEqualTo(RoutingParametersService.RoutingParameters(start = start, destination = destination, time = time))
+
+        assertThat(conversationCache?.getConversation(REQUEST_ID))
+                .isNotNull
+                .hasSize(1)
+    }
+
+    @Test
+    fun getRoutingParametersWithNow() {
+        //given
+        assertThat(routingParametersService).isNotNull
+
+        //when
+        val prompt = "Wie komme ich jetzt vom Grüningweg zur Holmer Straße in Wedel?"
+        val routingParameters = routingParametersService?.getRoutingParameters(REQUEST_ID, prompt)
+
+        //then
+        val time = NOW
+        assertThat(routingParameters?.time).isNotNull()
+        val parsedTime = routingParameters?.time?.let { ZonedDateTime.parse(it) }
+        val between = Duration.between(time, parsedTime)
+        assertThat(between.seconds).isLessThan(10)
 
         assertThat(conversationCache?.getConversation(REQUEST_ID))
                 .isNotNull
