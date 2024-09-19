@@ -1,6 +1,6 @@
 package de.hbt.routing.exception
 
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 
-class ChatException(val requestId: String, val status: HttpStatus, message: String,
+class ChatException(val requestId: String, val status: HttpStatusCode, message: String,
                     e: Exception): RuntimeException(message, e)

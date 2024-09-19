@@ -14,6 +14,7 @@ import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.client.RestClientResponseException
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -24,7 +25,7 @@ private val logger = KotlinLogging.logger {}
 @Tag(name = "Route Chat", description = "all requests that support sending route requests")
 class AppController(private val routingParametersService: RoutingParametersService, private val gtiOrchestrationService: GTIOrchestrationService) {
 
-    data class Message<T>(val requestId: String, val content: T)
+    data class GtiErrorMessage(val returnCode: String, val errorText: String, val errorDevInfo: String?)
     data class RouteRequest(val requestId: String, val content: String)
     data class RouteSuggestion(val requestId: String, val content: RoutingParametersService.RoutingParameters)
     data class ErrorMessage(val requestId: String, val content: String)
@@ -56,6 +57,7 @@ class AppController(private val routingParametersService: RoutingParametersServi
 
     @Operation(summary = "Submit calculation request", responses = [
         ApiResponse(responseCode = "200", description = "Calculation request successful", content = [Content(schema = Schema(implementation = CalculationResult::class))]),
+        ApiResponse(responseCode = "400", description = "Request was wrong", content = [Content(schema = Schema(implementation = ErrorMessage::class))]),
         ApiResponse(responseCode = "500", description = "Internal server error during processing", content = [Content(
                 schema = Schema(implementation = ErrorMessage::class),
         )]),
@@ -70,6 +72,8 @@ class AppController(private val routingParametersService: RoutingParametersServi
             val response = gtiOrchestrationService.orchestrate(parsedInfo)
             val successMessage = CalculationResult(requestId = request.requestId, content = response)
             ResponseEntity.ok(successMessage)
+        } catch (e: RestClientResponseException) {
+            throw ChatException(request.requestId, e.statusCode, e.getResponseBodyAs(GtiErrorMessage::class.java)!!.errorText, e)
         } catch (e: Exception) {
             throw ChatException(request.requestId, HttpStatus.INTERNAL_SERVER_ERROR, e.localizedMessage, e)
         }
