@@ -9,17 +9,22 @@ import de.hbt.routing.openai.dto.ChatRequest
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.Locale
+import java.util.*
 
 @Service
 class GTIOrchestrationService(private val gtiService: GTIService,
                               private val openAIService: OpenAIService,
                               private val objectMapper: ObjectMapper) {
 
+
     companion object {
         private val log = KotlinLogging.logger {}
+        val GTI_ZONE = ZoneId.of("Europe/Berlin")
+        val GTI_DATE_FORMATTER = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
+        val GTI_TIME_FORMATTER = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.GERMAN).withZone(GTI_ZONE)
         private const val SYSTEM_PROMPT = """
 You are a smart assistant that helps users with routing requests. Your goal is to give the user an advise which route to take based on the API response of a routing service.
 Give a short and precise advise in {{LOCALE}}. It should include which exact transport line to take (Bus, U-Bahn, S-Bahn), where to change and when they arrive at the destination.
@@ -50,8 +55,10 @@ Give a short and precise advise in {{LOCALE}}. It should include which exact tra
     private fun doTheGRRequest(parsedJson: ParsedInfo): GRResponse {
         val start = SDName(name = parsedJson.from, type = SDName.Type.uNKNOWN)
         val dest = SDName(name = parsedJson.to, type = SDName.Type.uNKNOWN)
-        val time = GTITime(date = parsedJson.time.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)), time = parsedJson.time.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)))
-        val gtiResponse = gtiService.getRoute(start, dest, time)
+        val date = parsedJson.time.format(GTI_DATE_FORMATTER)
+        val time = parsedJson.time.format(GTI_TIME_FORMATTER)
+        val gtiTime = GTITime(date = date, time = time)
+        val gtiResponse = gtiService.getRoute(start, dest, gtiTime)
         return gtiResponse
     }
 }

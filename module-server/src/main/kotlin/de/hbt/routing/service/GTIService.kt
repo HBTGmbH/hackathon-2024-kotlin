@@ -11,12 +11,13 @@ open class GTIService(private val restClient: RestClient) {
 
     fun getRoute(start: SDName, destination: SDName, dateTime: GTITime): GRResponse {
         val request = GRRequest(
-            start = start,
-            dest = destination,
-            time = dateTime,
-            schedulesBefore = 0,
-            schedulesAfter = 0,
-            version = 58
+                start = start,
+                dest = destination,
+                time = dateTime,
+                timeIsDeparture = true,
+                schedulesBefore = 0,
+                schedulesAfter = 0,
+                version = 58
         )
         val result = restClient.post()
                 .uri("$GTI_PREFIX/getRoute")
