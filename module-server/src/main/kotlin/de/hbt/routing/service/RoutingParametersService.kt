@@ -29,7 +29,7 @@ class RoutingParametersService(private val conversationCache: ConversationCache,
 
     private fun generateSystemPrompt(): String {
         val zone = ZoneId.of("Europe/Berlin")
-        val now = LocalDateTime.now().atZone(zone).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        val now = LocalDateTime.now(zone).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         return """
 You are a smart assistant that extracts three key parameters from user queries: start location, destination, and time. Always return a structured JSON with these fields:
 
