@@ -17,10 +17,4 @@ class ExceptionHandler {
         return ResponseEntity(errorMessage, e.status)
     }
 
-    @ExceptionHandler(GtiException::class)
-    fun handleGtiException(e: GtiException): ResponseEntity<AppController.ErrorMessage> {
-        val errorMessage = AppController.ErrorMessage(e.requestId, e.gtiErrorMessage.errorText)
-
-        return ResponseEntity(errorMessage, e.statusCode)
-    }
 }
