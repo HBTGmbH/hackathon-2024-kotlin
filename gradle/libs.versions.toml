@@ -8,6 +8,7 @@ tomcat-annotations = "6.0.53"
 httpclient = "5.3.1"
 jaxb = "4.0.3"
 jakarta-xml = "4.0.1"
+jackson = "2.17.2"
 slf4j = "2.0.16"
 log4j = "2.23.1"
 log4j-ecs = "1.6.0"
@@ -55,6 +56,8 @@ spring-sec = { module = "org.springdoc:springdoc-openapi-starter-common", versio
 spring-openapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "spring-doc" }
 jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "jaxb" }
 jakarta-xml-binding = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "jakarta-xml" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.module:jackson-datatype-jsr310", version.ref = "jackson" }
 keycloak-core = { module = "org.keycloak:keycloak-core", version.ref = "keycloak" }
 keycloak-policy-enforcer = { module = "org.keycloak:keycloak-policy-enforcer", version.ref = "keycloak" }
 grpc-api = { module = "io.grpc:grpc-api", version.ref = "grpc" }
@@ -98,6 +101,10 @@ plugin-jib = { module = "com.google.cloud.tools:jib-gradle-plugin", version.ref 
 gson = {module = "com.google.code.gson:gson", version.ref = "gson"}
 
 [bundles]
+jackson = [
+    "jackson-module-kotlin",
+    "jackson-datatype-jsr310"
+]
 logging = [
     "log4j-api",
     "log4j-core",
