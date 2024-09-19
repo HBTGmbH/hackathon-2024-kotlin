@@ -4,6 +4,7 @@ import de.hbt.routing.configuration.OpenAIRestTemplateConfig
 import de.hbt.routing.openai.OpenAIService
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.Arguments.of
@@ -19,7 +20,7 @@ import java.util.stream.Stream
 
 
 @SpringBootTest(classes = [RoutingParametersService::class, ConversationCache::class, OpenAIService::class, OpenAIRestTemplateConfig::class])
-//@Disabled("manual")
+@Disabled("manual")
 class RoutingParametersServiceIntegrationTest {
 
     private val REQUEST_ID = "123"
