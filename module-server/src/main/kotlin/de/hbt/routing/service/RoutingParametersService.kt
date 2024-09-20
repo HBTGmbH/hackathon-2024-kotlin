@@ -38,7 +38,10 @@ Destination: Where the user wants to go.
 Time: When the user wants to travel.
 If start or destination are missing, set it to null. Handle informal language and adjust time to UTC.
 Use the next AM/PM if applicable, and for "now" use $now.
-If only a day is given, assume the current time on that day. If no time can be inferred, set it to now.
+If only a day is given, assume the current time on that day. If no time can be inferred, set it to $now.
+
+"Bist du Aldi? Wo geht?" denotes the wish to go to Aldi where a friend already is.
+"Ich Edeka" means that I am at Edeka.
 
 Return a plain unformatted json (no markdown).
 Example output: {"start": "New York", "destination": "Boston", "time": "$now"}

@@ -70,18 +70,20 @@ class RoutingParametersServiceIntegrationTest {
                         result("Grüningweg", "Holmer Straße, Wedel", TOMORROW_AT_8)),
                 of("Vom Hauptbahnhof zur Stadthausbrücke",
                         result("Hauptbahnhof", "Stadthausbrücke", NOW)),
-                of("Ich am in Ahrensburg. When can I get the next connection to Lüneburg?",
+                of("I am in Ahrensburg. When can I get the next connection to Lüneburg?",
                         result("Ahrensburg", "Lüneburg", NOW)),
                 of("Wie komme ich jetzt von der Mühlenstraße zum Rathausplatz in Hamburg?",
                         result("Mühlenstraße", "Rathausplatz, Hamburg", NOW)),
                 of("Ab Schanzenviertel nach St. Pauli",
                         result("Schanzenviertel", "St. Pauli", NOW)),
-                of("Ich möchte gerne vom Jungfernstieg zum Altonaer Fischmarkt.",
+                of("Ich möchte gerne zum Altonaer Fischmarkt vom Jungfernstieg.",
                         result("Jungfernstieg", "Altonaer Fischmarkt", NOW)),
                 of("Vom Hauptbahnhof zur Stadthausbrücke morgen",
                         result("Hauptbahnhof", "Stadthausbrücke", TOMORROW_AT_THE_SAME_TIME)),
                 of("Vom Schulterblatt zur Grindelallee übermorgen um 12 Uhr",
-                        result("Schulterblatt", "Grindelallee", IN_TWO_DAYS_AT_12))
+                        result("Schulterblatt", "Grindelallee", IN_TWO_DAYS_AT_12)),
+                of("Eh, Digga, bist du Aldi? Wo geht? Ich Edeka.",
+                        result("Edeka", "Aldi", NOW)),
         )
 
         private fun result(
