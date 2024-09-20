@@ -59,6 +59,10 @@ class RoutingParametersServiceIntegrationTest {
         private val NOW = NOW_TIME.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         private val TOMORROW_AT_8 = NOW_TIME.plusDays(1).withHour(8).withMinute(0).withSecond(0).withNano(0)
                 .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        private val TOMORROW_AT_THE_SAME_TIME = NOW_TIME.plusDays(1)
+                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        private val IN_TWO_DAYS_AT_12 = NOW_TIME.plusDays(2).withHour(12).withMinute(0).withSecond(0).withNano(0)
+                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 
         @JvmStatic
         fun data(): Stream<Arguments> = Stream.of(
@@ -68,6 +72,16 @@ class RoutingParametersServiceIntegrationTest {
                         result("Hauptbahnhof", "Stadthausbrücke", NOW)),
                 of("Ich am in Ahrensburg. When can I get the next connection to Lüneburg?",
                         result("Ahrensburg", "Lüneburg", NOW)),
+                of("Wie komme ich jetzt von der Mühlenstraße zum Rathausplatz in Hamburg?",
+                        result("Mühlenstraße", "Rathausplatz, Hamburg", NOW)),
+                of("Ab Schanzenviertel nach St. Pauli",
+                        result("Schanzenviertel", "St. Pauli", NOW)),
+                of("Ich möchte gerne vom Jungfernstieg zum Altonaer Fischmarkt.",
+                        result("Jungfernstieg", "Altonaer Fischmarkt", NOW)),
+                of("Vom Hauptbahnhof zur Stadthausbrücke morgen",
+                        result("Hauptbahnhof", "Stadthausbrücke", TOMORROW_AT_THE_SAME_TIME)),
+                of("Vom Schulterblatt zur Grindelallee übermorgen um 12 Uhr",
+                        result("Schulterblatt", "Grindelallee", IN_TWO_DAYS_AT_12))
         )
 
         private fun result(
